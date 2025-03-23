@@ -88,7 +88,7 @@ jobs:
 
       - name: Upload APKs (${{ matrix.chunk.number }})
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        if: "github.repository == 'keiyoushi/extensions-source'"
+        if: "github.repository == 'Senjosei/extensions-source'"
         with:
           name: "individual-apks-${{ matrix.chunk.number }}"
           path: "**/*.apk"
@@ -100,7 +100,7 @@ jobs:
   publish:
     name: Publish extension repo
     needs: [prepare, build]
-    if: "github.repository == 'keiyoushi/extensions-source'"
+    if: "github.repository == 'Senjosei/extensions-source'"
     runs-on: 'ubuntu-24.04'
     steps:
       - name: Download APK artifacts
@@ -124,7 +124,7 @@ jobs:
         run: |
           cd main
           python ./.github/scripts/move-built-apks.py
-          INSPECTOR_LINK="$(curl -s "https://api.github.com/repos/keiyoushi/extensions-inspector/releases/latest" | jq -r '.assets[0].browser_download_url')"
+          INSPECTOR_LINK="$(curl -s "https://api.github.com/repos/Senjosei/extensions-inspector/releases/latest" | jq -r '.assets[0].browser_download_url')"
           curl -L "$INSPECTOR_LINK" -o ./Inspector.jar
           java -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
           python ./.github/scripts/create-repo.py
