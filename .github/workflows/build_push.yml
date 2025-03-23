@@ -129,16 +129,16 @@ jobs:
           java -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
           python ./.github/scripts/create-repo.py
 
-      - name: Checkout repo branch
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          repository: keiyoushi/extensions
-          token: ${{ secrets.BOT_PAT }}
-          ref: repo
-          path: repo
+      # - name: Checkout repo branch
+      #   uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      #   with:
+      #     repository: keiyoushi/extensions
+      #     token: ${{ secrets.BOT_PAT }}
+      #     ref: repo
+      #     path: repo
 
-      - name: Merge and deploy repo
-        run: |
-          cd repo
-          python ../main/.github/scripts/merge-repo.py '${{ needs.prepare.outputs.delete }}'
-          ../main/.github/scripts/commit-repo.sh
+      # - name: Merge and deploy repo
+      #   run: |
+      #     cd repo
+      #     python ../main/.github/scripts/merge-repo.py '${{ needs.prepare.outputs.delete }}'
+      #     ../main/.github/scripts/commit-repo.sh
