@@ -130,7 +130,7 @@ class Koharu(
             alt4: DataKey?,
         ): Pair<Int?, String?> {
             return Pair(
-                ori?.id ?: alt1?.id ?: alt2?.id ?: alt3?.id ?: alt4?.id,
+                ori?.id ?: alt1?.id ?: alt2?.id ?: alt3?.id ?: alt4?.id, 
                 ori?.key ?: alt1?.key ?: alt2?.key ?: alt3?.key ?: alt4?.key,
             )
         }
