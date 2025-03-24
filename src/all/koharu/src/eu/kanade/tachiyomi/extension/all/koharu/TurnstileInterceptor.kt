@@ -180,12 +180,10 @@ class TurnstileInterceptor(
                     try {
                         val noRedirectClient = client.newBuilder().followRedirects(false).build()
                         val authHeaders = authHeaders("Bearer $token")
-                        runBlocking(Dispatchers.IO) {
+                        return runBlocking(Dispatchers.IO) {
                             val response = noRedirectClient.newCall(GET(authUrl, authHeaders)).execute()
                             response.use {
-                                if (response.isSuccessful) {
-                                    return true
-                                }
+                                response.isSuccessful
                             }
                         }
                     } catch (_: IOException) {
