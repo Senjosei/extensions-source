@@ -122,14 +122,14 @@ class TurnstileInterceptor(
                             try {
                                 val noRedirectClient = client.newBuilder().followRedirects(false).build()
                                 val authHeaders = authHeaders(authHeader)
-                                val response = runBlocking(Dispatchers.IO) {
-                                    noRedirectClient.newCall(POST(authUrl, authHeaders)).execute()
-                                }
-                                response.use {
-                                    if (response.isSuccessful) {
-                                        with(response) {
-                                            token = body.string()
-                                                .removeSurrounding("\"")
+                                runBlocking(Dispatchers.IO) {
+                                    val response = noRedirectClient.newCall(POST(authUrl, authHeaders)).execute()
+                                    response.use {
+                                        if (response.isSuccessful) {
+                                            with(response) {
+                                                token = body.string()
+                                                    .removeSurrounding("\"")
+                                            }
                                         }
                                     }
                                 }
@@ -180,12 +180,12 @@ class TurnstileInterceptor(
                     try {
                         val noRedirectClient = client.newBuilder().followRedirects(false).build()
                         val authHeaders = authHeaders("Bearer $token")
-                        val response = runBlocking(Dispatchers.IO) {
-                            noRedirectClient.newCall(GET(authUrl, authHeaders)).execute()
-                        }
-                        response.use {
-                            if (response.isSuccessful) {
-                                return true
+                        runBlocking(Dispatchers.IO) {
+                            val response = noRedirectClient.newCall(GET(authUrl, authHeaders)).execute()
+                            response.use {
+                                if (response.isSuccessful) {
+                                    return true
+                                }
                             }
                         }
                     } catch (_: IOException) {
