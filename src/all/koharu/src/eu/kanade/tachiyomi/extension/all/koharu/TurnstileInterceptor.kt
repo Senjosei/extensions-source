@@ -177,18 +177,19 @@ class TurnstileInterceptor(
                 }
 
                 private fun recheckTokenValid(token: String): Boolean {
-                    try {
-                        val noRedirectClient = client.newBuilder().followRedirects(false).build()
-                        val authHeaders = authHeaders("Bearer $token")
-                        return runBlocking(Dispatchers.IO) {
+                    return runBlocking(Dispatchers.IO) {  // Ensure network call runs in IO dispatcher
+                        try {
+                            val noRedirectClient = client.newBuilder().followRedirects(false).build()
+                            val authHeaders = authHeaders("Bearer $token")
+                
                             val response = noRedirectClient.newCall(GET(authUrl, authHeaders)).execute()
                             response.use {
                                 response.isSuccessful
                             }
+                        } catch (_: IOException) {
+                            false
                         }
-                    } catch (_: IOException) {
                     }
-                    return false
                 }
             }
 
